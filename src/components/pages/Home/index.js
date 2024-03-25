@@ -25,7 +25,7 @@ const HomePage = () => {
     const getShoes = async () => {
       setIsLoading(true);
       try {
-        const response = await fetch('http://localhost:8080/products');
+        const response = await fetch('http://192.168.68.127:8080/products');
         if (!response.ok) {
           throw new Error(`Error fetching data: ${response.status}`);
         }

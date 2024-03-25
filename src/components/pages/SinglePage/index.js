@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { addToCart } from './../../core/cart-state/actions';
 import './style.css';
 
-const ShoeDetails = ({ shoe }) => {
+const ShoeDetails = ({ }) => {
 
   const { id } = useParams();
 
@@ -10,22 +12,24 @@ const ShoeDetails = ({ shoe }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [quantity, setQuantity] = useState(1);
-  const [vars, setVars] = useState([]);
-  const [selectedMaterial, setSelectedMaterial] = useState("");
-  const [selectedSize, setSelectedSize] = useState("");
-  const [selectedColor, setSelectedColor] = useState("");
+  const [selectedVariation, setSelectedVariation] = useState(undefined);
+  const [selectedColor, setSelectedColor] = useState(undefined);
+  const [selectedSize, setSelectedSize] = useState(undefined);
 
   useEffect(() => {
     const getShoeDetails = async () => {
       setIsLoading(true);
       try {
-        const response = await fetch(`http://localhost:8080/products/${id}`);
+        const response = await fetch(`http://192.168.68.127:8080/products/${id}`);
         if (!response.ok) {
           throw new Error(`Error fetching data: ${response.status}`);
         }
         const data = await response.json();
         setData(data);
-        setVars(data.variations); // Assuming variations array is directly available in the API response
+
+        if (data.variations.length > 0) {
+          setSelectedVariation(data.variations[0]);
+        }
       } catch (error) {
         setError(error);
       } finally {
@@ -46,16 +50,32 @@ const ShoeDetails = ({ shoe }) => {
     setQuantity(quantity + 1);
   };
 
-  const handleMaterialClick = (material) => {
-    setSelectedMaterial(material);
+
+  const handleSizeSelected = (event) => {
+    setSelectedSize(event.target.value);
   };
 
-  const handleSizeClick = (size) => {
-    setSelectedSize(size);
+  const handleColorSelected = (event) => {
+    setSelectedColor(event.target.value);
   };
 
-  const handleColorClick = (color) => {
-    setSelectedColor(color);
+  const handleSelectVariation = (event) => {
+    const variation = data.variations.filter((e) => e.material == event.target.value)[0];
+    setSelectedVariation(variation);
+  }
+
+  const dispatch = useDispatch();
+
+  const handleAddToCart = () => {
+    const product = {
+      shoe: data,
+      variation: {
+        material: selectedVariation.material,
+        color: selectedColor,
+        size: selectedSize
+      }
+    } 
+    dispatch(addToCart(product));
   };
 
   return (
@@ -71,31 +91,69 @@ const ShoeDetails = ({ shoe }) => {
           </div>
           <div className="info-wrapper">
             <h1>{data.name}</h1>
-            <p>Unit Price: $20</p>
+            <p>Unit Price: ${selectedVariation?.price }</p>
             <div className="options">
-  {vars.map((variation, index) => (
-    <React.Fragment key={index}>
-      <button onClick={() => handleMaterialClick(variation.material)}>{variation.material}</button>
-    
-      {variation.sizes && variation.sizes.length > 0 &&
-        <button onClick={() => handleSizeClick(variation.sizes[0])}>{variation.sizes[0]}</button>
-      }
-    
-      {variation.colors && variation.colors.length > 0 &&
-        <button onClick={() => handleColorClick(variation.colors[0])}>{variation.colors[0]}</button>
-      }
-    </React.Fragment>
-  ))}
-</div>
+
+              <select value={selectedVariation?.material} onChange={handleSelectVariation}>
+
+                {data.variations.map((option) => (
+                  <option key={option.material} value={option.material}>
+                    {option.material}
+                  </option>
+                ))}
+
+              </select>
+
+
+
+              {/* Selected variation */}
+
+              {
+                selectedVariation == undefined ? (
+                  <div></div>
+                ) : (
+                  <div>
+                    <select value={selectedColor} onChange={handleColorSelected}>
+
+                      {selectedVariation.colors.map((option) => (
+                        <option key={option} value={option}>
+                          {option}
+                        </option>
+                      ))}
+
+                    </select>
+
+                    <br />
+
+                    <select value={selectedSize} onChange={handleSizeSelected}>
+
+                      {selectedVariation.sizes.map((option) => (
+                        <option key={option} value={option}>
+                          {option}
+                        </option>
+                      ))}
+
+                    </select>
+                  </div>
+                )
+              }
+
+
+
+
+            </div>
 
             <div className="quantity-wrapper">
               <button onClick={decreaseQuantity}>-</button>
               <span>{quantity}</span>
               <button onClick={increaseQuantity}>+</button>
             </div>
-            <p>Total Price: ${20 * quantity}</p>
-            <Link to="/cart">
+            <p>Total Price: ${selectedVariation?.price * quantity}</p>
+            <br />
               <button className="add-to-cart-button">Add to Cart</button>
+              <br />
+            <Link to="/cart">
+              <p>Go to cart</p>
             </Link>
           </div>
         </div>
