@@ -1,0 +1,55 @@
+.shoe-details-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.details-wrapper {
+  display: flex;
+  align-items: flex-start;
+}
+
+.image-wrapper {
+  flex: 1;
+}
+
+.image-wrapper img {
+  max-width: 100%;
+  height: auto;
+}
+
+.info-wrapper {
+  flex: 2;
+  padding-left: 20px;
+}
+
+.info-wrapper h1 {
+  color: #1175D2;
+}
+
+.options {
+  margin-top: 10px;
+}
+
+.select-material-button,
+.select-size-button,
+.select-color-button,
+.add-to-cart-button {
+  background-color: #1175D2;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.add-to-cart-button {
+  margin-top: 20px;
+}
+
+.add-to-cart-button:hover {
+  background-color: #0e5aaf;
+}

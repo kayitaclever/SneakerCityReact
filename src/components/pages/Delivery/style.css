@@ -1,0 +1,51 @@
+.delivery-container {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .delivery-container h1 {
+    color: #1175D2; 
+  }
+  
+  .delivery-container form {
+    margin-top: 20px;
+  }
+  
+  .delivery-container label {
+    display: block;
+    margin-bottom: 5px;
+    color: #1175D2; 
+  }
+  
+  .delivery-container input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .delivery-container button[type="submit"] {
+    background-color: #1175D2; 
+    color: white; 
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .delivery-container button[type="submit"]:hover {
+    background-color: #0e5aaf; 
+  }
+  
+  .delivery-container p {
+    margin-top: 20px;
+  }
+  
+  .delivery-container a {
+    color: #1175D2; 
+  }
+  
