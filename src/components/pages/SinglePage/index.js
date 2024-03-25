@@ -25,7 +25,7 @@ const ShoeDetails = ({ shoe }) => {
         }
         const data = await response.json();
         setData(data);
-        setVars(data.variations); // Assuming variations array is directly available in the API response
+        setVars(data.variations); 
       } catch (error) {
         setError(error);
       } finally {
